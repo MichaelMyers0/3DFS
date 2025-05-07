@@ -5,7 +5,6 @@
 #include <dirent.h>
 #include <stack>
 #include <vector>
-enum {start_port_number = 5000};
 class fs_user_dump
 {
 	enum {buf_cap = 1024};
@@ -18,7 +17,8 @@ class fs_user_dump
 public:
 	fs_user_dump() = default;
 	fs_user_dump(const char* path, int port);
-	void start(const char* path=NULL);	
+	void start(const char* path=NULL);
+	void connect_to_abars(int port);	
 	~fs_user_dump();
 };
 #endif

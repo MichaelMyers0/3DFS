@@ -58,6 +58,11 @@ void fs_user_dump::start(const char* path)
 	stack.pop();
 }
 
+void fs_user_dump::connect_to_abars(int port)
+{
+	s.connectt(port);
+}
+
 fs_user_dump::~fs_user_dump()
 {
 	s.reuse_port();
