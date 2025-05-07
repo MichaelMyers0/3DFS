@@ -1,6 +1,6 @@
 #include "fs_user_dump.h"
 
-void fs_user_dump::path_builder(const char* start, char* path, char* dir_name)
+void fs_user_dump::path_builder(const char* start, char* path, const char* dir_name)
 {
 	auto len = 0;
 	strcpy(path, start);
@@ -9,6 +9,26 @@ void fs_user_dump::path_builder(const char* start, char* path, char* dir_name)
 	strcpy(path + len + 1, dir_name);
 	len = strlen(path);
 	*(path + len) = 0;
+}
+
+void fs_user_dump::file_builder(const char* name)
+{
+         struct stat sbuf;
+         buffer b;
+         char* p;
+         auto res = 0, len = 0;	
+	 errno = 0;
+         res = stat(name, &sbuf);
+         path_builder(stack.top(), b.s, name);
+         len = strlen(b.s);
+         *(b.s + len) = '_';
+         p = ctime(&(sbuf.st_mtim.tv_sec));
+         if (p)
+         	strcat(b.s, ctime(&(sbuf.st_mtim.tv_sec)));
+         delete_spaces(b.s);
+         len = strlen(b.s);
+         *(b.s + len) = 0;
+         files.push_back(b);
 }
 
 void fs_user_dump::delete_spaces(char* string)
@@ -31,9 +51,6 @@ fs_user_dump::fs_user_dump(const char* path, int port)
 void fs_user_dump::start(const char* path, const char* date)
 {
 	struct dirent* ent;
-	struct stat sbuf;
-	buffer b;
-	char* p;
 	auto res = 0, len = 0;
 	errno = 0;
 	auto dirp = opendir(stack.top());
@@ -49,18 +66,7 @@ void fs_user_dump::start(const char* path, const char* date)
 		switch (ent->d_type)
 		{
 			case DT_REG :
-				errno = 0;
-				res = stat(ent->d_name, &sbuf);
-				path_builder(stack.top(), b.s, ent->d_name);
-				len = strlen(b.s);
-				*(b.s + len) = '_';
-				p = ctime(&(sbuf.st_mtim.tv_sec));
-				if (p)
-					strcat(b.s, ctime(&(sbuf.st_mtim.tv_sec)));
-				delete_spaces(b.s);
-				len = strlen(b.s);
-				*(b.s + len) = 0;
-				files.push_back(b);
+				file_builder(ent->d_name);
 				break;
 			case DT_DIR :
 				len = strlen(ent->d_name);

@@ -20,7 +20,8 @@ class fs_user_dump
 	std::vector<buffer> files;
 	char buf[buf_cap];
 	char fname[buf_cap];
-	void path_builder(const char* start, char* path, char* dir_name);
+	void path_builder(const char* start, char* path, const char* dir_name);
+	void file_builder(const char* name);
 	void delete_spaces(char* string);
 public:
 	fs_user_dump() = default;
