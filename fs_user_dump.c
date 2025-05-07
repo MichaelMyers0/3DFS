@@ -11,6 +11,16 @@ void fs_user_dump::path_builder(const char* start, char* path, char* dir_name)
 	*(path + len) = 0;
 }
 
+void fs_user_dump::delete_spaces(char* string)
+{
+	while (*string)
+	{
+		if (*string == ' ')
+			*string = '_';
+		string++;
+	}	
+}
+
 fs_user_dump::fs_user_dump(const char* path, int port)
 {
 	stack.push(path);
@@ -22,6 +32,7 @@ void fs_user_dump::start(const char* path, const char* date)
 {
 	struct dirent* ent;
 	struct stat sbuf;
+	buffer b;
 	auto res = 0, len = 0;
 	errno = 0;
 	auto dirp = opendir(stack.top());
@@ -39,9 +50,14 @@ void fs_user_dump::start(const char* path, const char* date)
 			case DT_REG :
 				errno = 0;
 				res = stat(ent->d_name, &sbuf);
-				path_builder(stack.top(), fname, ent->d_name);
-				files.push_back(fname);
-				*fname = 0;
+				path_builder(stack.top(), b.s, ent->d_name);
+				len = strlen(b.s);
+				*(b.s + len) = '_';
+				strcpy(b.s + len + 1, ctime(&(sbuf.st_mtim.tv_sec)));
+				delete_spaces(b.s);
+				len = strlen(b.s);
+				*(b.s + len) = 0;
+				files.push_back(b);
 				break;
 			case DT_DIR :
 				len = strlen(ent->d_name);

@@ -13,10 +13,15 @@ class fs_user_dump
 	enum {back_slash = '/'};
 	sockets s;
 	std::stack<const char*> stack;
-	std::vector<const char*> files;
+	struct buffer
+	{
+		char s[buf_cap];
+	};
+	std::vector<buffer> files;
 	char buf[buf_cap];
 	char fname[buf_cap];
 	void path_builder(const char* start, char* path, char* dir_name);
+	void delete_spaces(char* string);
 public:
 	fs_user_dump() = default;
 	fs_user_dump(const char* path, int port);
