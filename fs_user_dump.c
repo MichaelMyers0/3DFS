@@ -33,6 +33,7 @@ void fs_user_dump::start(const char* path, const char* date)
 	struct dirent* ent;
 	struct stat sbuf;
 	buffer b;
+	char* p;
 	auto res = 0, len = 0;
 	errno = 0;
 	auto dirp = opendir(stack.top());
@@ -53,7 +54,9 @@ void fs_user_dump::start(const char* path, const char* date)
 				path_builder(stack.top(), b.s, ent->d_name);
 				len = strlen(b.s);
 				*(b.s + len) = '_';
-				strcpy(b.s + len + 1, ctime(&(sbuf.st_mtim.tv_sec)));
+				p = ctime(&(sbuf.st_mtim.tv_sec));
+				if (p)
+					strcat(b.s, ctime(&(sbuf.st_mtim.tv_sec)));
 				delete_spaces(b.s);
 				len = strlen(b.s);
 				*(b.s + len) = 0;
