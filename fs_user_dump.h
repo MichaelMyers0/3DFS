@@ -3,6 +3,8 @@
 #include "net.h"
 #include <sys/types.h>
 #include <dirent.h>
+#include <time.h>
+#include <sys/stat.h>
 #include <stack>
 #include <vector>
 class fs_user_dump
@@ -13,11 +15,12 @@ class fs_user_dump
 	std::stack<const char*> stack;
 	std::vector<const char*> files;
 	char buf[buf_cap];
+	char fname[buf_cap];
 	void path_builder(const char* start, char* path, char* dir_name);
 public:
 	fs_user_dump() = default;
 	fs_user_dump(const char* path, int port);
-	void start(const char* path=NULL);
+	void start(const char* path=nullptr, const char* date=nullptr);
 	void connect_to_abars(int port);	
 	~fs_user_dump();
 };

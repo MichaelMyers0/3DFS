@@ -18,9 +18,11 @@ fs_user_dump::fs_user_dump(const char* path, int port)
 	s.bind_socket(port);
 }
 
-void fs_user_dump::start(const char* path)
+void fs_user_dump::start(const char* path, const char* date)
 {
 	struct dirent* ent;
+	struct stat sbuf;
+	auto res = 0, len = 0;
 	errno = 0;
 	auto dirp = opendir(stack.top());
 	if (!dirp)
@@ -35,10 +37,14 @@ void fs_user_dump::start(const char* path)
 		switch (ent->d_type)
 		{
 			case DT_REG :
-				files.push_back(ent->d_name);
+				errno = 0;
+				res = stat(ent->d_name, &sbuf);
+				path_builder(stack.top(), fname, ent->d_name);
+				files.push_back(fname);
+				*fname = 0;
 				break;
 			case DT_DIR :
-				auto len = strlen(ent->d_name);
+				len = strlen(ent->d_name);
 				if (len >= buf_cap)
 					break;
 				path_builder(stack.top(), buf, ent->d_name);
@@ -49,7 +55,7 @@ void fs_user_dump::start(const char* path)
 		}
 	}
 	errno = 0;
-	auto res = closedir(dirp);
+	res = closedir(dirp);
 	if (res == -1)
 	{
 		perror("void fs_user_dump::start(path)->closedir()\n");

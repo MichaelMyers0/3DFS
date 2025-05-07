@@ -3,7 +3,6 @@
 int main()
 {
 	fs_user_dump fs(".", space::start_port_number);
-//	fs.init(".");
 	fs.start(NULL);
 	fs.connect_to_abars(space::abars_port_number);
 	exit(0);
