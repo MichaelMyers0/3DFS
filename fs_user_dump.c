@@ -11,10 +11,11 @@ void fs_user_dump::path_builder(const char* start, char* path, char* dir_name)
 	*(path + len) = 0;
 }
 
-fs_user_dump::fs_user_dump(const char* path)
+fs_user_dump::fs_user_dump(const char* path, int port)
 {
 	stack.push(path);
 	s.creat_socket(AF_INET6, SOCK_STREAM);
+	s.bind_socket(port);
 }
 
 void fs_user_dump::start(const char* path)
@@ -59,5 +60,6 @@ void fs_user_dump::start(const char* path)
 
 fs_user_dump::~fs_user_dump()
 {
+	s.reuse_port();
 	s.close_socket();
 }

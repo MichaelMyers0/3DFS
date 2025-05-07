@@ -17,7 +17,7 @@ class fs_user_dump
 	void path_builder(const char* start, char* path, char* dir_name);
 public:
 	fs_user_dump() = default;
-	fs_user_dump(const char* path);
+	fs_user_dump(const char* path, int port);
 	void start(const char* path=NULL);	
 	~fs_user_dump();
 };
