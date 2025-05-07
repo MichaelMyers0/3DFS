@@ -1,9 +1,35 @@
 #include "fs_user_dump.h"
+
+void fs_user_dump::path_builder(const char* start, char* path, char* dir_name)
+{
+	auto len = 0;
+	strcpy(path, start);
+	len = strlen(path);
+	*(path + len) = back_slash;
+	strcpy(path + len + 1, dir_name);
+	len = strlen(path);
+	*(path + len) = 0;
+}
+
+void fs_user_dump::dump()
+{
+	while (stack.top())
+	{
+		printf("%s\n", stack.top());
+		stack.pop();
+	}
+}
+
+void fs_user_dump::init(const char* path)
+{
+	stack.push(path);
+}
+
 void fs_user_dump::start(const char* path)
 {
 	struct dirent* ent;
 	errno = 0;
-	auto dirp = opendir(path);
+	auto dirp = opendir(stack.top());
 	if (!dirp)
 	{
 		perror("void fs_user_dump::start(path)->opendir()\n");
@@ -11,7 +37,7 @@ void fs_user_dump::start(const char* path)
 	}
 	while ((ent = readdir(dirp)))
 	{
-		if (0 == strcmp(ent->d_name, ".") || 0 == strcmp(ent->d_name, ".."))
+		if (0 == strcmp(ent->d_name, ".") || 0 == strcmp(ent->d_name, "..") || 0 == strcmp(ent->d_name, ".git"))
 			continue;
 		switch (ent->d_type)
 		{
@@ -22,9 +48,9 @@ void fs_user_dump::start(const char* path)
 				auto len = strlen(ent->d_name);
 				if (len >= buf_cap)
 					break;
-				strcpy(buf, ent->d_name);
-				*(buf + len) = 0;
+				path_builder(stack.top(), buf, ent->d_name);
 				stack.push(buf);
+				start(stack.top());
 				*buf = 0;
 				break;
 		}
@@ -36,4 +62,5 @@ void fs_user_dump::start(const char* path)
 		perror("void fs_user_dump::start(path)->closedir()\n");
 		exit(2);
 	}
+	dump();
 }

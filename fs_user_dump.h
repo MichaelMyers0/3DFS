@@ -8,11 +8,15 @@
 class fs_user_dump
 {
 	enum {buf_cap = 1024};
+	enum {back_slash = '/'};
 	sockets s;
 	std::stack<const char*> stack;
 	std::vector<const char*> files;
 	char buf[buf_cap];
+	void path_builder(const char* start, char* path, char* dir_name);
+	void dump();
 public:
-	void start(const char* path);	
+	void init(const char* path);
+	void start(const char* path=NULL);	
 };
 #endif
