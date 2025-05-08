@@ -4,8 +4,8 @@ net.o:net.c
 	$(CXX) $(CXXFLAGS) -g -O -c $< -o $@
 fs_user_dump.o:fs_user_dump.c
 	$(CXX) $(CXXFLAGS) -g -O -c $< -o $@
-abars:abars.c
-	$(CXX) $(CXXFLAGS) -g -O $< -o $@
-main:main.c fs_user_dump.o net.o
+abars.o:abars.c
+	$(CXX) $(CXXFLAGS) -g -O -c $< -o $@
+main:main.c fs_user_dump.o net.o abars.o
 	$(CXX) $(CXXFLAGS) -g -O $^ -o $@
 
