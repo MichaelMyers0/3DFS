@@ -23,7 +23,7 @@ public:
 	void listenn(int log);
 	void connectt(int port);
 	void acceptt(int& sfd);
-	void send_msg(const char* msg);
+	void send_msg(const char* msg, int& cnt);
 	void send_msg(int sfd, const char* msg);
 	void read_msg(char* msg);
 	void read_msg(int sfd, char* msg);

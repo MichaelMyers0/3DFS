@@ -66,10 +66,10 @@ void sockets::acceptt(int& sfd)
 	}
 }
 
-void sockets::send_msg(const char* msg)
-{
+void sockets::send_msg(const char* msg, int& cnt)	
+{	
 	auto len = strlen(msg);
-	write(fd, msg, len);
+	cnt = write(fd, msg, len);
 }
 
 void sockets::send_msg(int sfd, const char* msg)
@@ -94,11 +94,13 @@ void sockets::read_msg(int sfd, char* msg)
 {
 	errno = 0;
 	auto cnt = read(sfd, msg, msg_len);
+#if 0	
 	if (cnt == -1)
 	{
 		perror("read_msg(int sfd, char* msg\n)");
 		exit(7);
 	}
+#endif	
 	*(msg + cnt) = 0;
 }
 

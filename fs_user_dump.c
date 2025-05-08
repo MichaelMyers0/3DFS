@@ -100,13 +100,12 @@ void fs_user_dump::connect_to_abars(int port)
 
 void fs_user_dump::send_to_abars()
 {
-	s.send_msg(user_name);
-	auto iter = files.cbegin();
-	while (iter != files.cend())
-	{
-		s.send_msg(iter->s);
-		sleep(space::sleep_t);
-		iter++;
+	auto cnt = 0;
+	for (;;)
+	{	
+		s.send_msg(user_name, cnt);
+		if (cnt)
+			break;
 	}
 }
 

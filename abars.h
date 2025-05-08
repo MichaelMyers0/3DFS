@@ -3,6 +3,7 @@
 #include "net.h"
 #include "constv.h"
 #include <sys/stat.h>
+#include <fcntl.h>
 class abars
 {
 	enum {buf_cap = 512};
