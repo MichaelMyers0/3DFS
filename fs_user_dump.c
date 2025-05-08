@@ -41,8 +41,11 @@ void fs_user_dump::delete_spaces(char* string)
 	}	
 }
 
-fs_user_dump::fs_user_dump(const char* path, int port)
+fs_user_dump::fs_user_dump(const char* unam, const char* path, int port)
 {
+	auto len = strlen(unam);
+	strcpy(user_name, unam);
+	*(user_name + len) = 0;
 	stack.push(path);
 	s.creat_socket(AF_INET6, SOCK_STREAM);
 	s.bind_socket(port);
