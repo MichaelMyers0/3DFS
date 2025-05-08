@@ -6,8 +6,10 @@
 class abars
 {
 	sockets s;
+	static int server_id;
 public:	
 	abars();
+	void start();
 	~abars();
 };
 #endif

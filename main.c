@@ -1,6 +1,7 @@
 #include "fs_user_dump.h"
 #include "constv.h"
 #include "abars.h"
+int abars::server_id = 0;
 int main()
 {
 	fs_user_dump fs("lan1", ".", space::start_port_number);
