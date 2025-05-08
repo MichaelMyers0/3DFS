@@ -5,8 +5,12 @@
 #include <sys/stat.h>
 class abars
 {
+	enum {buf_cap = 512};
 	sockets s;
 	static int server_id;
+	char sbuf[buf_cap];
+	char dir_name[buf_cap];
+	void create_dir(const char* dir_name);
 public:	
 	abars();
 	void start();

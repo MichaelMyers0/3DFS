@@ -95,6 +95,19 @@ void fs_user_dump::start(const char* path, const char* date)
 void fs_user_dump::connect_to_abars(int port)
 {
 	s.connectt(port);
+	sleep(space::sleep_t);
+}
+
+void fs_user_dump::send_to_abars()
+{
+	s.send_msg(user_name);
+	auto iter = files.cbegin();
+	while (iter != files.cend())
+	{
+		s.send_msg(iter->s);
+		sleep(space::sleep_t);
+		iter++;
+	}
 }
 
 fs_user_dump::~fs_user_dump()

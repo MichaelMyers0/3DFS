@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <stack>
 #include <vector>
+#include "constv.h"
 class fs_user_dump
 {
 	enum {buf_cap = 1024};
@@ -29,6 +30,7 @@ public:
 	fs_user_dump(const char* unam, const char* path, int port);
 	void start(const char* path=nullptr, const char* date=nullptr);
 	void connect_to_abars(int port);	
+	void send_to_abars();
 	~fs_user_dump();
 };
 #endif

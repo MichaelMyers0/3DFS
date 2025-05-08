@@ -5,5 +5,6 @@ namespace space
 	enum {start_port_number = 5000};
 	enum {abars_port_number = 6000};
 	enum {nums_of_logs = 10};
+	enum {sleep_t = 20};
 };
 #endif
