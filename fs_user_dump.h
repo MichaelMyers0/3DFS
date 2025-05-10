@@ -12,6 +12,7 @@ class fs_user_dump
 {
 	enum {buf_cap = 1024};
 	enum {back_slash = '/'};
+	enum {sleep_t = 10};
 	sockets s;
 	std::stack<const char*> stack;
 	struct buffer
