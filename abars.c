@@ -11,9 +11,20 @@ void abars::create_dir(const char* dir_name)
         }
 }
 
+void abars::create_dir_for_a_user(const char* fname)
+{
+	strcpy(dir_name, "abars_fs");	
+	auto len = strlen(dir_name);
+	*(dir_name + len) = back_slash[0];
+	strcpy(dir_name + len + 1, fname);
+	len = strlen(dir_name);
+	*(dir_name + len) = 0;
+	create_dir(dir_name);
+}
+
 abars::abars()
 {
-	create_dir("./abras_fs");
+	create_dir("./abars_fs");
 	s.creat_socket(AF_INET6, SOCK_STREAM);
 	s.bind_socket(space::abars_port_number + 1);
 	s.listenn(space::nums_of_logs);
@@ -30,6 +41,12 @@ void abars::start()
 	{
 		s.read_msg(sfd, sbuf);
 		len = strlen(sbuf);
+		if (len && !is_flag_set)
+		{
+			create_dir_for_a_user(sbuf);
+			is_flag_set = 1;
+			continue;
+		}
 		if (len)
 		{
 			*(sbuf + len) = 0;

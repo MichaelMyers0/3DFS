@@ -93,17 +93,7 @@ void fs_user_dump::start(const char* path, const char* date)
 				break;
 		}
 	}
-#if 0	
-	errno = 0;
-	res = closedir(dirp);
-	if (res == -1)
-	{
-		perror("void fs_user_dump::start(path)->closedir()\n");
-		exit(2);
-	}
-#else
 	close_dir(dirp);
-#endif	
 	stack.pop();
 }
 
