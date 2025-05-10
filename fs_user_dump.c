@@ -41,6 +41,17 @@ void fs_user_dump::delete_spaces(char* string)
 	}	
 }
 
+void fs_user_dump::close_dir(DIR* dirp)
+{
+	errno = 0;
+	auto res = closedir(dirp);
+	if (res == -1)
+	{
+		perror("void fs_user_dump::close_dir()\n");
+		exit(2);
+	}
+}
+
 fs_user_dump::fs_user_dump(const char* unam, const char* path, int port)
 {
 	auto len = strlen(unam);
@@ -82,6 +93,7 @@ void fs_user_dump::start(const char* path, const char* date)
 				break;
 		}
 	}
+#if 0	
 	errno = 0;
 	res = closedir(dirp);
 	if (res == -1)
@@ -89,6 +101,9 @@ void fs_user_dump::start(const char* path, const char* date)
 		perror("void fs_user_dump::start(path)->closedir()\n");
 		exit(2);
 	}
+#else
+	close_dir(dirp);
+#endif	
 	stack.pop();
 }
 

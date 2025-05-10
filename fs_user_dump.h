@@ -26,6 +26,7 @@ class fs_user_dump
 	void path_builder(const char* start, char* path, const char* dir_name);
 	void file_builder(const char* name);
 	void delete_spaces(char* string);
+	void close_dir(DIR* dirp);
 public:
 	fs_user_dump() = default;
 	fs_user_dump(const char* unam, const char* path, int port);

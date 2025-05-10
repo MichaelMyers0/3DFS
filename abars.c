@@ -28,15 +28,6 @@ void abars::start()
 	s.acceptt(sfd);
 	for (;;)
 	{
-//		s.acceptt(sfd);
-#if 0
-		if (!is_flag_set)
-		{
-			flags = fcntl(sfd, F_GETFL);
-			fcntl(sfd, F_SETFL, flags | O_NONBLOCK);
-			is_flag_set = true;
-		}
-#endif		
 		s.read_msg(sfd, sbuf);
 		len = strlen(sbuf);
 		if (len)
