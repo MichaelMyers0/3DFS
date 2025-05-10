@@ -101,12 +101,29 @@ void fs_user_dump::connect_to_abars(int port)
 void fs_user_dump::send_to_abars()
 {
 	auto cnt = 0;
+#if 0	
 	for (;;)
 	{	
 		s.send_msg(user_name, cnt);
 		if (cnt)
 			break;
 	}
+#else
+	auto iter = files.cbegin();
+	for (;;)
+	{
+		if (iter == files.cend())
+			break;
+		s.send_msg(iter->s, cnt);
+		if (cnt == -1)
+		{
+			fprintf(stderr, "ERROR: void fs_user_dump::send_to_abars()\n");
+			exit(3);
+		}
+		sleep(10);
+		iter++;
+	}
+#endif	
 }
 
 fs_user_dump::~fs_user_dump()
